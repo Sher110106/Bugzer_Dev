@@ -12,8 +12,8 @@ export default function Hero() {
 
   return (
     <section className="relative flex flex-col items-center justify-center min-h-screen text-center px-4 overflow-hidden">
-      <BackgroundBeams />
-      <div className="absolute inset-0 w-full h-full">
+      <BackgroundBeams className="z-0" />
+      <div className="absolute inset-0 w-full h-full z-10">
         <SparklesCore
           id="tsparticlesfullpage"
           background="transparent"
@@ -25,17 +25,14 @@ export default function Hero() {
         />
       </div>
       <motion.div
-        className="z-10"
+        className="z-20 relative"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-6xl md:text-8xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">
+        <h1 className="text-6xl md:text-8xl font-extrabold mb-10 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500 leading-normal py-2">
           Bugzer
         </h1>
-        <div className="text-2xl md:text-4xl font-bold mb-6 text-white">
-          <TextGenerateEffect words="Your Automated Website Testing Agent" />
-        </div>
       </motion.div>
       <motion.p 
         className="text-xl md:text-2xl mb-8 max-w-2xl z-10 text-gray-300"

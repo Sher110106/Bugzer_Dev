@@ -5,10 +5,15 @@ import Link from 'next/link'
 import { Button } from './ui/button'
 import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { createClient } from '@/utils/supabase/client'
+import { useRouter } from 'next/navigation'
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [user, setUser] = useState<any>(null)
+  const router = useRouter()
+  const supabase = createClient()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,6 +22,25 @@ export function Header() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      setUser(user)
+    }
+    getUser()
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut()
+    router.push('/sign-in')
+  }
 
   return (
     <motion.header 
@@ -52,23 +76,36 @@ export function Header() {
             <Link href="/features" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
               Features
             </Link>
-            <Link href="/pricing" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
-              Pricing
-            </Link>
             <Link href="/docs" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
               Documentation
             </Link>
           </nav>
           <div className="flex items-center space-x-4">
-            <Button 
-              variant="ghost" 
-              className="text-sm text-gray-300 hover:text-white transition-all duration-300 hover:scale-105"
-            >
-              Sign In
-            </Button>
-            <Button className="text-sm bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 py-2 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
-              Get Started
-            </Button>
+            {!user ? (
+              <>
+                <Button 
+                  variant="ghost" 
+                  className="text-sm text-gray-300 hover:text-white transition-all duration-300 hover:scale-105"
+                  onClick={() => router.push('/sign-in')}
+                >
+                  Sign In
+                </Button>
+                <Button 
+                  className="text-sm bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 py-2 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+                  onClick={() => router.push('/sign-up')}
+                >
+                  Get Started
+                </Button>
+              </>
+            ) : (
+              <Button 
+                variant="ghost" 
+                className="text-sm text-gray-300 hover:text-white transition-all duration-300 hover:scale-105"
+                onClick={handleSignOut}
+              >
+                Sign Out
+              </Button>
+            )}
           </div>
         </div>
 
@@ -91,13 +128,6 @@ export function Header() {
                 Features
               </Link>
               <Link
-                href="/pricing"
-                className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                Pricing
-              </Link>
-              <Link
                 href="/docs"
                 className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
                 onClick={() => setIsOpen(false)}
@@ -105,19 +135,40 @@ export function Header() {
                 Documentation
               </Link>
               <div className="flex flex-col space-y-4 pt-4 border-t border-border/40">
-                <Button
-                  variant="ghost"
-                  className="text-sm text-gray-300 hover:text-white w-full justify-center"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Sign In
-                </Button>
-                <Button
-                  className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full transition-all duration-300 transform hover:scale-105 w-full justify-center"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Get Started
-                </Button>
+                {!user ? (
+                  <>
+                    <Button
+                      variant="ghost"
+                      className="text-sm text-gray-300 hover:text-white w-full justify-center"
+                      onClick={() => {
+                        setIsOpen(false)
+                        router.push('/sign-in')
+                      }}
+                    >
+                      Sign In
+                    </Button>
+                    <Button
+                      className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full transition-all duration-300 transform hover:scale-105 w-full justify-center"
+                      onClick={() => {
+                        setIsOpen(false)
+                        router.push('/sign-up')
+                      }}
+                    >
+                      Get Started
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    className="text-sm text-gray-300 hover:text-white w-full justify-center"
+                    onClick={() => {
+                      setIsOpen(false)
+                      handleSignOut()
+                    }}
+                  >
+                    Sign Out
+                  </Button>
+                )}
               </div>
             </nav>
           </motion.div>

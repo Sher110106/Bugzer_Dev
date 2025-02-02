@@ -5,34 +5,44 @@ import { InfiniteMovingCards } from '@/components/ui/aceternity/infinite-moving-
 
 const features = [
   {
-    title: 'User Behavior Simulation',
-    description: 'Our agent navigates your website, executing user-provided instructions and simulating real user interactions.',
-    icon: '🕹️'
+    title: 'AI-Powered Navigation',
+    description: 'Our autonomous AI agent navigates your website like a real user, understanding context and performing complex interactions.',
+    icon: '🤖'
+  },
+  {
+    title: 'Natural Language Instructions',
+    description: 'Simply tell Bugzer what to test in plain English, and watch as it executes complex testing scenarios.',
+    icon: '💬'
+  },
+  {
+    title: 'Automated VM Infrastructure',
+    description: 'Tests run in isolated, secure virtual machines that spin up on demand for consistent and reliable results.',
+    icon: '🖥️'
+  },
+  {
+    title: 'Scheduled Testing',
+    description: 'Set up automated cron jobs to regularly test your site after deployments or updates.',
+    icon: '⏰'
   },
   {
     title: 'Comprehensive Analysis',
-    description: 'Collect data on network performance, console logs, and generate insights on accessibility and SEO.',
+    description: 'Get detailed reports on performance, accessibility, user experience, and potential issues.',
     icon: '📊'
   },
   {
-    title: 'Actionable Reports',
-    description: 'Receive detailed reports with prioritized recommendations to improve your website\'s performance and user experience.',
-    icon: '📈'
+    title: 'Visual Regression Testing',
+    description: 'AI-powered visual comparison detects unwanted changes in your UI across updates.',
+    icon: '👁️'
   },
   {
-    title: 'AI-Powered Insights',
-    description: 'Leverage machine learning algorithms to predict potential issues and suggest proactive improvements.',
+    title: 'Context-Aware Testing',
+    description: 'Our AI understands your applications context and can test complex user flows automatically.',
     icon: '🧠'
   },
   {
-    title: 'Cross-Browser Testing',
-    description: 'Ensure your website performs flawlessly across all major browsers and devices.',
-    icon: '🌐'
-  },
-  {
-    title: 'Continuous Monitoring',
-    description: 'Set up automated tests to run periodically and receive alerts on any performance regressions.',
-    icon: '🔄'
+    title: 'Real-time Monitoring',
+    description: 'Get instant alerts when issues are detected during automated testing runs.',
+    icon: '📡'
   }
 ]
 
@@ -47,10 +57,10 @@ export default function Features() {
           className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Powerful Features
+            AI-Powered Testing
           </h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            Discover what makes Bugzer the ultimate website testing solution
+            Experience the future of web testing with our autonomous AI agent
           </p>
         </motion.div>
         

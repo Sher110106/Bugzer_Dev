@@ -6,6 +6,7 @@ import { Button } from './ui/button'
 import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/utils/supabase/client'
+import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 
 export function Header() {
@@ -13,6 +14,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [user, setUser] = useState<any>(null)
   const router = useRouter()
+
   const supabase = createClient()
 
   useEffect(() => {
@@ -40,6 +42,19 @@ export function Header() {
   const handleSignOut = async () => {
     await supabase.auth.signOut()
     router.push('/sign-in')
+  }
+
+  const pathname = usePathname()
+
+  const handleFeaturesClick = (e: React.MouseEvent) => {
+    if (pathname === '/') {
+      e.preventDefault()
+      const featuresSection = document.getElementById('features')
+      if (featuresSection) {
+        featuresSection.scrollIntoView({ behavior: 'smooth' })
+        setIsOpen(false)
+      }
+    }
   }
 
   return (
@@ -73,7 +88,11 @@ export function Header() {
         {/* Desktop navigation */}
         <div className="hidden md:flex items-center justify-between space-x-4">
           <nav className="flex items-center space-x-6">
-            <Link href="/features" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
+            <Link 
+              href={pathname === '/' ? '#features' : '/'} 
+              className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
+              onClick={handleFeaturesClick}
+            >
               Features
             </Link>
             <Link href="/docs" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">

@@ -3,45 +3,25 @@
 import { motion } from 'framer-motion'
 import { InfiniteMovingCards } from '@/components/ui/aceternity/infinite-moving-cards'
 
-const features = [
+const featureHighlights = [
   {
     title: 'AI-Powered Navigation',
-    description: 'Our autonomous AI agent navigates your website like a real user, understanding context and performing complex interactions.',
+    description: 'Our autonomous AI agent navigates your website like a real user.',
     icon: '🤖'
   },
   {
     title: 'Natural Language Instructions',
-    description: 'Simply tell Bugzer what to test in plain English, and watch as it executes complex testing scenarios.',
+    description: 'Simply tell Bugzer what to test in plain English.',
     icon: '💬'
   },
   {
     title: 'Automated VM Infrastructure',
-    description: 'Tests run in isolated, secure virtual machines that spin up on demand for consistent and reliable results.',
+    description: 'Tests run in isolated, secure virtual machines.',
     icon: '🖥️'
   },
   {
-    title: 'Scheduled Testing',
-    description: 'Set up automated cron jobs to regularly test your site after deployments or updates.',
-    icon: '⏰'
-  },
-  {
-    title: 'Comprehensive Analysis',
-    description: 'Get detailed reports on performance, accessibility, user experience, and potential issues.',
-    icon: '📊'
-  },
-  {
-    title: 'Visual Regression Testing',
-    description: 'AI-powered visual comparison detects unwanted changes in your UI across updates.',
-    icon: '👁️'
-  },
-  {
-    title: 'Context-Aware Testing',
-    description: 'Our AI understands your applications context and can test complex user flows automatically.',
-    icon: '🧠'
-  },
-  {
     title: 'Real-time Monitoring',
-    description: 'Get instant alerts when issues are detected during automated testing runs.',
+    description: 'Get instant alerts when issues are detected.',
     icon: '📡'
   }
 ]
@@ -66,7 +46,7 @@ export default function Features() {
         
         <div className="-mx-4 sm:mx-0">
           <InfiniteMovingCards 
-            items={features} 
+            items={featureHighlights} 
             direction="left" 
             speed="slow" 
             pauseOnHover={true}

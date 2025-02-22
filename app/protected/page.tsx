@@ -11,7 +11,7 @@ export default async function ProtectedPage() {
   }
   return(
     <div>
-      Hello
+      Hello this is going to be my dashboard
     </div>
   )
 }

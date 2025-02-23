@@ -1,6 +1,7 @@
+
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-
+import LandingPage from "@/components/landing";
 export default async function ProtectedPage() {
   const supabase = await createClient();
 
@@ -11,7 +12,9 @@ export default async function ProtectedPage() {
   }
   return(
     <div>
-      Hello this is going to be my dashboard
+      <LandingPage/>
     </div>
+   
+  
   )
 }

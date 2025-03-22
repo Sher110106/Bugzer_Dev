@@ -8,7 +8,7 @@ import { BackgroundBeams } from './ui/aceternity/background-beams'
 const ReportDetails = () => {
   const reportData = {
     websiteUrl: 'https://example-shop.com',
-    testContext: 'Check if the add-to-cart button works on the product page',
+    testContext: 'Check if the add to-cart button works on the product page',
     results: [
       'Navigated to https://example-shop.com successfully at 14:32:05 UTC',
       'Page load latency: 1.8 seconds',

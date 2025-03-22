@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from './ui/button'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, BarChart2 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/utils/supabase/client'
 import { usePathname } from 'next/navigation'
@@ -57,6 +57,14 @@ export function Header() {
     }
   }
 
+  const protectedLinks = [
+    {
+      href: '/protected/reports',
+      label: 'Reports',
+      icon: <BarChart2 className="w-4 h-4" />
+    }
+  ]
+
   return (
     <motion.header 
       className={`fixed top-0 w-full border-b border-border/40 backdrop-blur z-50 transition-colors duration-200 ${scrolled ? 'bg-background/95 supports-[backdrop-filter]:bg-background/60' : 'bg-transparent'}`}
@@ -98,6 +106,16 @@ export function Header() {
             <Link href="/docs" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
               Documentation
             </Link>
+            {user && protectedLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="flex items-center space-x-1 text-sm font-medium text-gray-300 hover:text-white transition-colors"
+              >
+                {link.icon}
+                <span>{link.label}</span>
+              </Link>
+            ))}
           </nav>
           <div className="flex items-center space-x-4">
             {!user ? (
@@ -153,6 +171,17 @@ export function Header() {
               >
                 Documentation
               </Link>
+              {user && protectedLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="flex items-center space-x-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.icon}
+                  <span>{link.label}</span>
+                </Link>
+              ))}
               <div className="flex flex-col space-y-4 pt-4 border-t border-border/40">
                 {!user ? (
                   <>

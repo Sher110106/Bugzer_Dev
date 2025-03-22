@@ -2,16 +2,12 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import FeedbackForm from "@/components/FeedbackForm";
 
-type SearchParams = { id?: string };
+type Props = {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
 
-export default async function ReportPage({ 
-  searchParams 
-}: { 
-  searchParams: SearchParams | Promise<SearchParams>
-}) {
-  // First await the searchParams object
-  const resolvedParams = await Promise.resolve(searchParams);
-  
+export default async function ReportPage({ params, searchParams }: Props) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -19,8 +15,9 @@ export default async function ReportPage({
     redirect("/sign-in");
   }
 
-  // Check for id parameter using the resolved params
-  const reportId = resolvedParams?.id;
+  // Since you're using searchParams.id, ensure you await it correctly
+  const searchParamsResult = await searchParams;
+  const reportId = searchParamsResult.id as string | undefined;
   if (!reportId) {
     redirect("/protected/reports");
   }

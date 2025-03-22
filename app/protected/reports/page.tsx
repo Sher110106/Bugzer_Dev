@@ -1,11 +1,11 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import ReportsHistory from "@/components/ReportsHistory";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
-import { serverApiClient } from "@/utils/server-api-client";
 
-export default async function ReportsPage() {
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
+export default async function ReportPage({ params }: Props) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -13,41 +13,20 @@ export default async function ReportsPage() {
     redirect("/sign-in");
   }
 
-  try {
-    // Use server API client to fetch reports
-    const response = await serverApiClient.getAllReports();
-    
-    if (!response || !response.reports) {
-      return (
-        <>
-          <Header />
-          <div className="container mx-auto py-20 px-4">
-            <h1 className="text-3xl font-bold mb-8">No reports found</h1>
-            <p>Create a test to generate reports.</p>
-          </div>
-          <Footer />
-        </>
-      );
-    }
+  // Await the params to access the `id`
+  const { id: reportId } = await params;
 
-    return (
-      <>
-        <Header />
-        <ReportsHistory reports={response.reports} />
-        <Footer />
-      </>
-    );
-  } catch (error) {
-    console.error("Error fetching reports:", error);
-    return (
-      <>
-        <Header />
-        <div className="container mx-auto py-20 px-4">
-          <h1 className="text-3xl font-bold mb-8">Error loading reports</h1>
-          <p>There was an error loading your reports. Please try again later.</p>
-        </div>
-        <Footer />
-      </>
-    );
+  // Verify the report exists and belongs to the user
+  const { data: report } = await supabase
+    .from("reports")
+    .select("*")
+    .eq("id", reportId)
+    .eq("user_id", user.id)
+    .single();
+
+  if (!report) {
+    redirect("/protected/reports");
   }
+
+  return <div>Report Details for ID: {reportId}</div>;
 }

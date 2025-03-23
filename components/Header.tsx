@@ -1,29 +1,32 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { Button } from './ui/button'
 import { Menu, X, BarChart2 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/utils/supabase/client'
-import { usePathname } from 'next/navigation'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [user, setUser] = useState<any>(null)
   const router = useRouter()
+  const pathname = usePathname()
 
+  // Create Supabase client once
   const supabase = createClient()
 
+  // Memoize the scroll handler to prevent unnecessary rerenders
+  const handleScroll = useCallback(() => {
+    setScrolled(window.scrollY > 20)
+  }, [])
+
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
-    }
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [handleScroll])
 
   useEffect(() => {
     const getUser = async () => {
@@ -37,14 +40,12 @@ export function Header() {
     })
 
     return () => subscription.unsubscribe()
-  }, [])
+  }, [supabase.auth])
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
     router.push('/sign-in')
   }
-
-  const pathname = usePathname()
 
   const handleFeaturesClick = (e: React.MouseEvent) => {
     if (pathname === '/') {
